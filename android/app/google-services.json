@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "932175665567",
+    "firebase_url": "https://recipe-778e6.firebaseio.com",
+    "project_id": "recipe-778e6",
+    "storage_bucket": "recipe-778e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932175665567:android:d306a43ee83e31b33a05aa",
+        "android_client_info": {
+          "package_name": "com.example.moyin_challenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932175665567-jt5eq82ifquuf1r781ugrhl87e2687lb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moyin_challenge",
+            "certificate_hash": "6b5520e300326696303c048aa53fec26e3cef403"
+          }
+        },
+        {
+          "client_id": "932175665567-dmu7lsfbk07vfqcvnb9qcc3l6gnokv77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7XtVFOnP1N1r-sCeRGTDj2WUb4YfmiSo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932175665567-dmu7lsfbk07vfqcvnb9qcc3l6gnokv77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:moyin_challenge/pages/details.dart';
 import 'package:moyin_challenge/pages/newpage.dart';
 import 'package:moyin_challenge/pages/search.dart';
+import 'package:moyin_challenge/pages/settings.dart';
 import 'package:moyin_challenge/util/recipe.dart';
 
 class NextPage extends StatefulWidget {
@@ -12,62 +16,99 @@ class NextPage extends StatefulWidget {
 
 class _NextPageState extends State<NextPage> {
   int cindex = 0;
-
+  // bool isSelected = _children == cindex;
   var recpe = Recipe();
 
   bool stch = true;
-  final List<Widget> _children = [
-    NewPage(),
-    Details(),
-    Search()
-  ];
+  final List<Widget> _children = [NewPage(), Details(), Search(), Settings()];
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+
+    // ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: false);
+    ScreenUtil.init(context,
+        width: defaultScreenWidth,
+        height: defaultScreenHeight,
+        allowFontScaling: true);
+
+    // var size = MediaQuery.of(context).size;
     return Scaffold(
-        // backgroundColor: Color(0xFFE5EAF5),
-         backgroundColor: Colors.white,
+        // backgroundColor: Color(0xFFF9FDFF),
+        backgroundColor: Colors.white,
         body: _children[cindex],
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: EdgeInsets.only(top: ScreenUtil().setWidth(8.0)),
           child: BottomNavigationBar(
-            currentIndex: cindex,
             type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                activeIcon:Icon(Icons.home) ,
-                  icon: Icon(Icons.home, color: Colors.grey),
-                  title: new Text(
-                    'Home',
-                    style: TextStyle(fontSize: 11.0, color: Colors.grey),
+            unselectedIconTheme: IconThemeData(color: Colors.grey),
+            showUnselectedLabels: true,
+            selectedFontSize: 9.0,
+            // selectedItemColor: Colors.blue,
+            unselectedLabelStyle: TextStyle(color: Colors.green, fontSize: 8.5),
+            unselectedItemColor: Colors.grey,
+            items: <BottomNavigationBarItem>[
+              new BottomNavigationBarItem(
+                  activeIcon: Container(
+                      child: SvgPicture.asset(
+                    'assets/images/home.svg',
+                    color: Color(0xFF257ED9),
                   )),
-              BottomNavigationBarItem(
-                  activeIcon:Icon(FontAwesomeIcons.edit,size: 20.0,) ,
-                  icon: Icon(FontAwesomeIcons.edit, color: Colors.grey,size: 20.0,),
-                  title: new Text(
-                    'Create',
-                    style: TextStyle(fontSize: 11.0, color: Colors.grey),
-                  )),
-              BottomNavigationBarItem(
-                  activeIcon:Icon(Icons.search) ,
-                  icon: Icon(Icons.search, color: Colors.grey),
-                  title: new Text(
-                    'Search',
-                    style: TextStyle(fontSize: 11.0, color: Colors.grey),
-                  )),
-              BottomNavigationBarItem(
-                  activeIcon:Icon(Icons.settings) ,
-                  icon: Icon(
-                    Icons.settings,
+                  icon: Container(
+                      child: SvgPicture.asset(
+                    'assets/images/home.svg',
                     color: Colors.grey,
-                  ),
-                  title: new Text(
-                    'Settings',
-                    style: TextStyle(fontSize: 11.0, color: Colors.grey),
+                  )),
+                  title: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: new Text("Home"),
+                  )),
+              new BottomNavigationBarItem(
+                  activeIcon: Container(
+                      child: SvgPicture.asset('assets/images/edit1.svg')),
+                  icon: Container(
+                      child: SvgPicture.asset(
+                    'assets/images/edit.svg',
+                    color: Colors.grey,
+                  )),
+                  title: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: new Text("Create"),
+                  )),
+              new BottomNavigationBarItem(
+                  activeIcon: Container(
+                      child: SvgPicture.asset('assets/images/search1.svg')),
+                  icon: Container(
+                      child: SvgPicture.asset(
+                    'assets/images/search.svg',
+                    color: Colors.grey,
+                  )),
+                  title: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: new Text("Search"),
+                  )),
+              new BottomNavigationBarItem(
+                  activeIcon: SvgPicture.asset('assets/images/settings1.svg'),
+                  icon: Container(
+                      child: SvgPicture.asset(
+                    'assets/images/settings.svg',
+                    color: Colors.grey,
+                  )),
+                  title: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: new Text(
+                      "Settings",
+                    ),
                   ))
             ],
-            onTap: onTabTapped,
+            currentIndex: cindex,
+            onTap: (int i) {
+              setState(() {
+                cindex = i;
+              });
+            },
+            fixedColor: Color(0xFF257ED9),
           ),
         ));
   }
@@ -86,8 +127,8 @@ class _NextPageState extends State<NextPage> {
   }
 
   void onTabTapped(int index) {
-   setState(() {
-     cindex = index;
-   });
- }
+    setState(() {
+      cindex = index;
+    });
+  }
 }
