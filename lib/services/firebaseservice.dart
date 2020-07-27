@@ -17,6 +17,6 @@ class FirebaseService {
         .setData({'name': _name, 'email': _email}).catchError((e){
           print(e);
         });
-    print('service was succesful');
+   
   }
 }
