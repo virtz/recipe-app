@@ -16,7 +16,9 @@ class AuthService {
   Future getCurrentEmail() async {
     return (await auth.currentUser()).email;
   }
-
+Future getCurrentName() async{
+  return (await auth.currentUser()).displayName;
+}
   //Get Current user
   Future getCurrentUser() async {
     return await auth.currentUser();
@@ -40,6 +42,7 @@ class AuthService {
     String email,
     String password,
   ) async {
+    print('auth function was called');
     return ((await auth.signInWithEmailAndPassword(
       email: email,
       password: password,

@@ -3,7 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moyin_challenge/pages/login.dart';
 
+import 'package:moyin_challenge/pages/nextPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class HomePage extends StatelessWidget {
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -17,7 +22,9 @@ class HomePage extends StatelessWidget {
         allowFontScaling: true);
 
     return Scaffold(
-       backgroundColor: Color(0xFFF9FDFF),
+        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Color(0xFFF9FDFF),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w),
           child: Column(
@@ -30,9 +37,9 @@ class HomePage extends StatelessWidget {
                           fontSize: ScreenUtil().setSp(22.0),
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF2A3A64)))),
-              SizedBox(height:ScreenUtil().setHeight(20)),
+              SizedBox(height: ScreenUtil().setHeight(20)),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: Text(
                     "Lorem Ipsum is simply dummy text of the printing  ",
                     style: TextStyle(color: Color.fromRGBO(42, 58, 100, 0.8))),
@@ -60,8 +67,9 @@ class HomePage extends StatelessWidget {
               SizedBox(height: ScreenUtil().setHeight(200)),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => Login()));
+                  //            Navigator.of(context).push(MaterialPageRoute(
+                  // builder: (BuildContext context) =>  Login()));
+                  next(context);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -71,12 +79,16 @@ class HomePage extends StatelessWidget {
                       Text('Next',
                           style: TextStyle(
                               color: Theme.of(context).primaryColor,
-                              fontSize:ScreenUtil().setSp(13.74),
+                              fontSize: ScreenUtil().setSp(13.74),
                               fontWeight: FontWeight.w600)),
                       SizedBox(
                         width: 6.0,
                       ),
-                      Icon(Icons.arrow_forward,size:20, color:Theme.of(context).primaryColor,)
+                      Icon(
+                        Icons.arrow_forward,
+                        size: 20,
+                        color: Theme.of(context).primaryColor,
+                      )
                     ],
                   ),
                 ),
@@ -84,5 +96,25 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  next(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedin');
+    print(prefs.getBool('isLoggedin'));
+
+    if (isLoggedIn == true) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => NextPage()));
+    } else if (isLoggedIn == false) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => Login()));
+    } else if (isLoggedIn == null) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => Login()));
+    }else{
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => Login()));
+    }
   }
 }

@@ -23,11 +23,11 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    // var size = MediaQuery.of(context).size;
 
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     // ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: false);
     ScreenUtil.init(context,

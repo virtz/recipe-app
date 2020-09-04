@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:moyin_challenge/pages/nextPage.dart';
+
 import 'package:moyin_challenge/providers/userProvider.dart';
 import 'package:provider/provider.dart';
 

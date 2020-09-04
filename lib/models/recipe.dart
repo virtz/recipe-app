@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Recipe{
   // String recipe;
   String title;
-  DateTime date;
+String date;
   bool done;
   String content;
 
@@ -48,6 +48,6 @@ Map<String,dynamic> toJson(){
     'content':content
   };
 }
-           String toString()=>"Vacination<$title>"; 
+           String toString()=>"Recipe<$title>"; 
 }
     
