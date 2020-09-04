@@ -12,7 +12,7 @@ Recipe app is a basic applicatio to store your favorite recipes for Android buil
 </p>
 
 ## Design
--Provider State management architecture
+- Provider State management architecture
 - FirebaseAuth for authentication
 - Firebase Cloud Firestore as backend database
 
