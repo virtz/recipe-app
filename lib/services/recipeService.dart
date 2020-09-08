@@ -6,6 +6,7 @@ import 'package:moyin_challenge/services/authService.dart';
 class RecipeService {
   final db = Firestore.instance;
   Recipe recipe = Recipe();
+  List<Recipe> recipeList = [];
 
   addRecipe(Recipe recipe) async {
     final uEmail = await AuthService().getCurrentEmail();
@@ -24,27 +25,19 @@ class RecipeService {
     });
   }
 
-
   getRecipes() async {
     final uEmail = await AuthService().getCurrentEmail();
-
-   QuerySnapshot snapshot =  await db
+      QuerySnapshot snapshot = await db
         .collection('userData')
         .document(uEmail)
         .collection('recipes')
-        .getDocuments().catchError((e){
-          if(e is PlatformException){
-            print(e);
-          }
-        });
-
-  List<Recipe> recipeList = [];
-  snapshot.documents.forEach((document) { 
-    Recipe recipe = Recipe.fromJson(document.data);
-    recipeList.add(recipe);
-    print(recipeList[0].content);
-    return recipeList;
-  });
-        
+        .getDocuments()
+        .catchError((e) {
+      if (e is PlatformException) {
+        print(e);
+      }
+    });
+  return snapshot;
+    // print(recipe);
   }
 }

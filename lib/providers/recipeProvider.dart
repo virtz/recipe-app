@@ -42,20 +42,23 @@ class RecipeProvider with ChangeNotifier {
     }
   }
 
-  getRecipes() async {
+  Future getRecipes() async {
+    List<Recipe> recipeList = [];
     try {
-      await RecipeService().getRecipes().then((data) {
+      QuerySnapshot snapshot = await RecipeService().getRecipes();
         setLoading(true);
-        setMessage('successful');
-
-        notifyListeners();
+      
+      snapshot.documents.forEach((document) {
+        Recipe recipe = Recipe.fromJson(document.data);
+        recipeList.add(recipe);
       });
-
+      notifyListeners();
       setLoading(false);
+      print(recipeList);
+      print('function was called');
     } catch (e) {
-      setMessage(e.message);
-      setLoading(false);
+      print(e);
     }
-    // return recipes;
+    // return recipeList;
   }
 }

@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:moyin_challenge/pages/details.dart';
+
 import 'package:moyin_challenge/providers/recipeProvider.dart';
 import 'package:moyin_challenge/providers/userProvider.dart';
 import 'package:moyin_challenge/services/authService.dart';
+
 
 import 'package:moyin_challenge/util/recipe.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class NewPage extends StatefulWidget {
 }
 
 class _NewPageState extends State<NewPage> {
-  var recpe = Recipe();
+ 
   String username;
   bool stch = true;
   Future data;
@@ -29,7 +30,8 @@ class _NewPageState extends State<NewPage> {
   @override
   void initState() {
     getUsername();
-
+    // data = Provider.of<RecipeProvider>(context,listen:false).getRecipes();
+    // Future.microtask(() => Provider.of<RecipeProvider>(context,listen:false).getRecipes());
     super.initState();
   }
 
@@ -38,7 +40,7 @@ class _NewPageState extends State<NewPage> {
     Provider.of<UserProvider>(
       context,
     ).getUserName(username);
-    // data = Provider.of<RecipeProvider>(context,listen:false).getRecipes();
+   
     var size = MediaQuery.of(context).size;
     // getUsername();
     double defaultScreenWidth = 400.0;
@@ -117,32 +119,50 @@ class _NewPageState extends State<NewPage> {
             Expanded(child:
                 Consumer<RecipeProvider>(builder: (context, recipeProvider, _) {
               return FutureBuilder(
-                  future: recipeProvider.getRecipes(),
-                  // Future.wait([recipeProvider.getRecipes(),]),
-                  //  recipeProvider.getRecipes(),
-                  // initialData: null,
+                  future: data,
+                  // recipeProvider.getRecipes(),
+                  
                   builder: (context, snapshot) {
+                    final int dataCount = snapshot.data.length;
 
-                    final int dataCount = snapshot.data.documents.length;
                     switch (snapshot.connectionState) {
                       case ConnectionState.active:
-                        return CircularProgressIndicator(
-                            backgroundColor: Theme.of(context).primaryColor);
-                            break;
-                        case ConnectionState.done:
-                        return dataCount == null ?CircularProgressIndicator(
-                            backgroundColor: Theme.of(context).primaryColor):buildRecipe(snapshot, dataCount);
-                         case ConnectionState.waiting:
-                        return CircularProgressIndicator(
-                            backgroundColor: Theme.of(context).primaryColor);
-                            break;
-                        
-                        default:   
+                        return Center(
+                          child: CircularProgressIndicator(
+                              backgroundColor: Theme.of(context).primaryColor),
+                        );
+                        break;
+                      case ConnectionState.done:
+                        return dataCount == null || snapshot.hasData == false
+                            ? Center(
+                              child: CircularProgressIndicator(
+                                  backgroundColor: Theme.of(context).primaryColor),
+                            )
+                            : GridView.builder(
+                                physics: BouncingScrollPhysics(),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: 0.65,
+                                        mainAxisSpacing: 7,
+                                        crossAxisSpacing: 5,
+                                        crossAxisCount: 2),
+                                itemCount: dataCount,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final DocumentSnapshot document =
+                                      snapshot.data[index];
+                                  return buildCard(document, dataCount, index);
+                                });
+                      case ConnectionState.waiting:
+                        return Center(
+                          child: CircularProgressIndicator(
+                              backgroundColor: Theme.of(context).primaryColor),
+                        );
+                        break;
+
+                      default:
                         return CircularProgressIndicator(
                             backgroundColor: Theme.of(context).primaryColor);
                     }
-                  
-                   
                   });
             }))
             // : Container(),
@@ -152,98 +172,66 @@ class _NewPageState extends State<NewPage> {
     );
   }
 
-  Widget buildRecipe(AsyncSnapshot<QuerySnapshot> snapshot,int dataCount){
-     return GridView.builder(
-                        physics: BouncingScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 0.65,
-                            mainAxisSpacing: 7,
-                            crossAxisSpacing: 5,
-                            crossAxisCount: 2),
-                        itemCount: dataCount,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                              onTap: () {
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (BuildContext context) => Details(
-                                //           title: recipe[index].title,
-                                //         )));
-                              },
-                              child: Card(
-                                elevation: 8,
-                                shadowColor: Color.fromRGBO(180, 180, 181, 0.1),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)),
-                                color: Color(0xFFFFFFFF),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color:
-                                            Color.fromRGBO(216, 216, 223, 0.8)),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 15.w, vertical: 15.w),
-                                    child: Column(children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                snapshot.data.documents[index]
-                                                    ['title'],
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        25, 30, 81, 0.88),
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(15)),
-                                              ),
-                                              SizedBox(
-                                                  height: ScreenUtil()
-                                                      .setHeight(5)),
-                                              Text(
-                                                  snapshot.data.documents[index]
-                                                      ['date'],
-                                                  style: TextStyle(
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(11),
-                                                      color: Color.fromRGBO(
-                                                          25, 30, 81, 0.7))),
-                                            ],
-                                          ),
-                                          Container(
-                                              child: SvgPicture.asset(
-                                                  'assets/images/chevron-right.svg',
-                                                  height: 21,
-                                                  color: Color.fromRGBO(
-                                                      25, 30, 81, 0.88))),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                          height: ScreenUtil().setHeight(10)),
-                                      Divider(
-                                        thickness: 1,
-                                      ),
-                                      SizedBox(
-                                          height: ScreenUtil().setHeight(10)),
-                                      Text(
-                                          snapshot.data.documents[index]
-                                              ['content'],
-                                          style: TextStyle(
-                                              fontSize:
-                                                  ScreenUtil().setSp(12.0),
-                                              color: Color.fromRGBO(
-                                                  25, 30, 81, 0.55)))
-                                    ]),
-                                  ),
-                                ),
-                              ));
-                        });
+  Widget buildCard(DocumentSnapshot document, int dataCount, int index) {
+    return GestureDetector(
+        onTap: () {
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (BuildContext context) => Details(
+          //           title: recipe[index].title,
+          //         )));
+        },
+        child: Card(
+          elevation: 8,
+          shadowColor: Color.fromRGBO(180, 180, 181, 0.1),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          color: Color(0xFFFFFFFF),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Color.fromRGBO(216, 216, 223, 0.8)),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
+              child: Column(children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          document.data[index]['title'],
+                          style: TextStyle(
+                              color: Color.fromRGBO(25, 30, 81, 0.88),
+                              fontWeight: FontWeight.w400,
+                              fontSize: ScreenUtil().setSp(15)),
+                        ),
+                        SizedBox(height: ScreenUtil().setHeight(5)),
+                        Text(document.data[index]['date'],
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(11),
+                                color: Color.fromRGBO(25, 30, 81, 0.7))),
+                      ],
+                    ),
+                    Container(
+                        child: SvgPicture.asset(
+                            'assets/images/chevron-right.svg',
+                            height: 21,
+                            color: Color.fromRGBO(25, 30, 81, 0.88))),
+                  ],
+                ),
+                SizedBox(height: ScreenUtil().setHeight(10)),
+                Divider(
+                  thickness: 1,
+                ),
+                SizedBox(height: ScreenUtil().setHeight(10)),
+                Text(document.data[index]['content'],
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(12.0),
+                        color: Color.fromRGBO(25, 30, 81, 0.55)))
+              ]),
+            ),
+          ),
+        ));
   }
 }
