@@ -7,7 +7,7 @@
 <img src="https://github.com/virtz/recipe-app/blob/master/flutter_03.png" width:"150px" height="400" hspace="5" vspace="20"/>
 <img src="https://github.com/virtz/recipe-app/blob/master/flutter_04.png" width:"150px" height="400" hspace="5" vspace="20"/>
 <img src="https://github.com/virtz/recipe-app/blob/master/flutter_05.png" width:"150px" height="400" hspace="5" vspace="20"/>
-<img src="https://github.com/virtz/recipe-app/blob/master/flutter_07.png" width:"150px" height="400" hspace="5" vspace="20"/>
+<img src="https://github.com/virtz/recipe-app/blob/master/flutter_06.png" width:"150px" height="400" hspace="5" vspace="20"/>
 </p>
 
 <p>
