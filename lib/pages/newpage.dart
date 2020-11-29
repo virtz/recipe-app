@@ -2,13 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:moyin_challenge/models/recipe.dart';
 
 import 'package:moyin_challenge/providers/recipeProvider.dart';
 import 'package:moyin_challenge/providers/userProvider.dart';
 import 'package:moyin_challenge/services/authService.dart';
 
-
-import 'package:moyin_challenge/util/recipe.dart';
 import 'package:provider/provider.dart';
 
 class NewPage extends StatefulWidget {
@@ -30,7 +29,7 @@ class _NewPageState extends State<NewPage> {
   @override
   void initState() {
     getUsername();
-    // data = Provider.of<RecipeProvider>(context,listen:false).getRecipes();
+    data = Provider.of<RecipeProvider>(context,listen:false).getRecipes();
     // Future.microtask(() => Provider.of<RecipeProvider>(context,listen:false).getRecipes());
     super.initState();
   }
@@ -52,7 +51,7 @@ class _NewPageState extends State<NewPage> {
         height: defaultScreenHeight,
         allowFontScaling: true);
 
-    // final recipeProvider = Provider.of<RecipeProvider>(context, listen: false);
+    final recipeProvider = Provider.of<RecipeProvider>(context);
 
     return Scaffold(
       backgroundColor: Color(0xFFF9FDFF),
@@ -116,26 +115,27 @@ class _NewPageState extends State<NewPage> {
             ),
             SizedBox(height: ScreenUtil().setHeight(15)),
 // Spacer(),
-            Expanded(child:
-                Consumer<RecipeProvider>(builder: (context, recipeProvider, _) {
-              return FutureBuilder(
-                  future: data,
-                  // recipeProvider.getRecipes(),
+            Expanded(
+              child: FutureBuilder(
+                future:data,
+                // Future.wait([recipeProvider.getRecipes(),]),
+                builder:(context,snapshot){
                   
-                  builder: (context, snapshot) {
-                    final int dataCount = snapshot.data.length;
-
-                    switch (snapshot.connectionState) {
+                switch (snapshot.connectionState) {
                       case ConnectionState.active:
                         return Center(
                           child: CircularProgressIndicator(
                               backgroundColor: Theme.of(context).primaryColor),
                         );
                         break;
+                        case ConnectionState.none:
+                        return Container();
                       case ConnectionState.done:
+                      final dataCount  = snapshot.data.length;
                         return dataCount == null || snapshot.hasData == false
                             ? Center(
-                              child: CircularProgressIndicator(
+                              child: 
+                              CircularProgressIndicator(
                                   backgroundColor: Theme.of(context).primaryColor),
                             )
                             : GridView.builder(
@@ -148,9 +148,9 @@ class _NewPageState extends State<NewPage> {
                                         crossAxisCount: 2),
                                 itemCount: dataCount,
                                 itemBuilder: (BuildContext context, int index) {
-                                  final DocumentSnapshot document =
+                                   Recipe recipe =
                                       snapshot.data[index];
-                                  return buildCard(document, dataCount, index);
+                                  return buildCard(recipe, dataCount, index);
                                 });
                       case ConnectionState.waiting:
                         return Center(
@@ -163,8 +163,15 @@ class _NewPageState extends State<NewPage> {
                         return CircularProgressIndicator(
                             backgroundColor: Theme.of(context).primaryColor);
                     }
-                  });
-            }))
+
+                }
+              )
+            
+                   
+
+                   
+                  
+           )
             // : Container(),
           ],
         ),
@@ -172,7 +179,7 @@ class _NewPageState extends State<NewPage> {
     );
   }
 
-  Widget buildCard(DocumentSnapshot document, int dataCount, int index) {
+  Widget buildCard(Recipe recipe, int dataCount, int index) {
     return GestureDetector(
         onTap: () {
           // Navigator.of(context).push(MaterialPageRoute(
@@ -200,14 +207,14 @@ class _NewPageState extends State<NewPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          document.data[index]['title'],
+                          recipe.title,
                           style: TextStyle(
                               color: Color.fromRGBO(25, 30, 81, 0.88),
                               fontWeight: FontWeight.w400,
                               fontSize: ScreenUtil().setSp(15)),
                         ),
                         SizedBox(height: ScreenUtil().setHeight(5)),
-                        Text(document.data[index]['date'],
+                        Text(recipe.date,
                             style: TextStyle(
                                 fontSize: ScreenUtil().setSp(11),
                                 color: Color.fromRGBO(25, 30, 81, 0.7))),
@@ -225,7 +232,8 @@ class _NewPageState extends State<NewPage> {
                   thickness: 1,
                 ),
                 SizedBox(height: ScreenUtil().setHeight(10)),
-                Text(document.data[index]['content'],
+                Text(recipe.content,
+                maxLines: 9,
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(12.0),
                         color: Color.fromRGBO(25, 30, 81, 0.55)))

@@ -7,7 +7,7 @@ import 'package:moyin_challenge/pages/details.dart';
 import 'package:moyin_challenge/pages/newpage.dart';
 import 'package:moyin_challenge/pages/search.dart';
 import 'package:moyin_challenge/pages/settings.dart';
-import 'package:moyin_challenge/util/recipe.dart';
+// import 'package:moyin_challenge/util/recipe.dart';
 
 class NextPage extends StatefulWidget {
   @override
@@ -17,7 +17,7 @@ class NextPage extends StatefulWidget {
 class _NextPageState extends State<NextPage> {
   int cindex = 0;
   // bool isSelected = _children == cindex;
-  var recpe = Recipe();
+  // var recpe = Recipe();
 
   bool stch = true;
   final List<Widget> _children = [NewPage(), Details(), Search(), Settings()];

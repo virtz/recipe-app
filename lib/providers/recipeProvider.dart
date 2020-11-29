@@ -52,13 +52,14 @@ class RecipeProvider with ChangeNotifier {
         Recipe recipe = Recipe.fromJson(document.data);
         recipeList.add(recipe);
       });
-      notifyListeners();
+      
       setLoading(false);
       print(recipeList);
-      print('function was called');
+      notifyListeners();
+      
     } catch (e) {
       print(e);
     }
-    // return recipeList;
+    return recipeList;
   }
 }

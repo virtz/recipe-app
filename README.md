@@ -1,11 +1,14 @@
 
 # recipe app
-![](flutter_01.png)
-![](flutter_02.png)
-![](flutter_03.png)
-![](flutter_04.png)
-![](flutter_05.png)
-![](flutter_06.png)
+
+<p>
+<img src="https://github.com/virtz/recipe-app/blob/master/flutter_01.png" width:"150px" height="400" hspace="5" vspace="20"/>
+<img src="https://github.com/virtz/recipe-app/blob/master/flutter_02.png" width:"150px" height="400" hspace="5" vspace="20"/>
+<img src="https://github.com/virtz/recipe-app/blob/master/flutter_03.png" width:"150px" height="400" hspace="5" vspace="20"/>
+<img src="https://github.com/virtz/recipe-app/blob/master/flutter_04.png" width:"150px" height="400" hspace="5" vspace="20"/>
+<img src="https://github.com/virtz/recipe-app/blob/master/flutter_05.png" width:"150px" height="400" hspace="5" vspace="20"/>
+<img src="https://github.com/virtz/recipe-app/blob/master/flutter_07.png" width:"150px" height="400" hspace="5" vspace="20"/>
+</p>
 
 <p>
 Recipe app is a basic applicatio to store your favorite recipes for Android built flutter.
@@ -19,4 +22,12 @@ Recipe app is a basic applicatio to store your favorite recipes for Android buil
 ## Bugs 😭🐛
 
 If you encounter any bugs or are facing any issues with the code, please don't hesitate to reach out to me. email :odunayoojomo0@gmail.com
+
+## Contribution 🍕🗺
+
+Feature requests, issues, pull requests and questions are welcome.
+
+## Credits 😎🤓
+
+virtz(owner of repo): Mobile Developer [( github )](https://github.com/virtz)
 
