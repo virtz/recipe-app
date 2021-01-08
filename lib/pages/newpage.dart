@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moyin_challenge/models/recipe.dart';
+import 'package:moyin_challenge/pages/details.dart';
 
 import 'package:moyin_challenge/providers/recipeProvider.dart';
 import 'package:moyin_challenge/providers/userProvider.dart';
@@ -16,7 +17,6 @@ class NewPage extends StatefulWidget {
 }
 
 class _NewPageState extends State<NewPage> {
- 
   String username;
   bool stch = true;
   Future data;
@@ -29,17 +29,19 @@ class _NewPageState extends State<NewPage> {
   @override
   void initState() {
     getUsername();
-    data = Provider.of<RecipeProvider>(context,listen:false).getRecipes();
+    data = Provider.of<RecipeProvider>(context, listen: false).getRecipes();
     // Future.microtask(() => Provider.of<RecipeProvider>(context,listen:false).getRecipes());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var recipeProvider = Provider.of<RecipeProvider>(context).getRecipes();
+
     Provider.of<UserProvider>(
       context,
     ).getUserName(username);
-   
+
     var size = MediaQuery.of(context).size;
     // getUsername();
     double defaultScreenWidth = 400.0;
@@ -51,7 +53,7 @@ class _NewPageState extends State<NewPage> {
         height: defaultScreenHeight,
         allowFontScaling: true);
 
-    final recipeProvider = Provider.of<RecipeProvider>(context);
+    // final recipeProvider = Provider.of<RecipeProvider>(context);
 
     return Scaffold(
       backgroundColor: Color(0xFFF9FDFF),
@@ -116,62 +118,58 @@ class _NewPageState extends State<NewPage> {
             SizedBox(height: ScreenUtil().setHeight(15)),
 // Spacer(),
             Expanded(
-              child: FutureBuilder(
-                future:data,
-                // Future.wait([recipeProvider.getRecipes(),]),
-                builder:(context,snapshot){
-                  
-                switch (snapshot.connectionState) {
-                      case ConnectionState.active:
-                        return Center(
-                          child: CircularProgressIndicator(
-                              backgroundColor: Theme.of(context).primaryColor),
-                        );
-                        break;
+                child: FutureBuilder(
+                    future: data,
+                    // Future.wait([recipeProvider.getRecipes(),]),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                          return Center(
+                            child: CircularProgressIndicator(
+                                backgroundColor:
+                                    Theme.of(context).primaryColor),
+                          );
+                          break;
                         case ConnectionState.none:
-                        return Container();
-                      case ConnectionState.done:
-                      final dataCount  = snapshot.data.length;
-                        return dataCount == null || snapshot.hasData == false
-                            ? Center(
-                              child: 
-                              CircularProgressIndicator(
-                                  backgroundColor: Theme.of(context).primaryColor),
-                            )
-                            : GridView.builder(
-                                physics: BouncingScrollPhysics(),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        childAspectRatio: 0.65,
-                                        mainAxisSpacing: 7,
-                                        crossAxisSpacing: 5,
-                                        crossAxisCount: 2),
-                                itemCount: dataCount,
-                                itemBuilder: (BuildContext context, int index) {
-                                   Recipe recipe =
-                                      snapshot.data[index];
-                                  return buildCard(recipe, dataCount, index);
-                                });
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: CircularProgressIndicator(
-                              backgroundColor: Theme.of(context).primaryColor),
-                        );
-                        break;
+                          return Container();
+                          break;
+                        case ConnectionState.done:
+                          final dataCount = snapshot.data.length;
+                          return dataCount == null || snapshot.hasData == false
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor),
+                                )
+                              : GridView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: 0.65,
+                                          mainAxisSpacing: 7,
+                                          crossAxisSpacing: 5,
+                                          crossAxisCount: 2),
+                                  itemCount: dataCount,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    Recipe recipe = snapshot.data[index];
 
-                      default:
-                        return CircularProgressIndicator(
-                            backgroundColor: Theme.of(context).primaryColor);
-                    }
+                                    return buildCard(recipe, dataCount, index,
+                                        snapshot.data[index]);
+                                  });
+                        case ConnectionState.waiting:
+                          return Center(
+                            child: CircularProgressIndicator(
+                                backgroundColor:
+                                    Theme.of(context).primaryColor),
+                          );
+                          break;
 
-                }
-              )
-            
-                   
-
-                   
-                  
-           )
+                        default:
+                          return CircularProgressIndicator(
+                              backgroundColor: Theme.of(context).primaryColor);
+                      }
+                    }))
             // : Container(),
           ],
         ),
@@ -179,13 +177,15 @@ class _NewPageState extends State<NewPage> {
     );
   }
 
-  Widget buildCard(Recipe recipe, int dataCount, int index) {
+  Widget buildCard(Recipe recipe, int dataCount, int index, int id) {
     return GestureDetector(
         onTap: () {
-          // Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (BuildContext context) => Details(
-          //           title: recipe[index].title,
-          //         )));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => Details(
+                  id: id,
+                  title: recipe.title,
+                  date: recipe.date,
+                  content: recipe.content)));
         },
         child: Card(
           elevation: 8,
@@ -233,7 +233,7 @@ class _NewPageState extends State<NewPage> {
                 ),
                 SizedBox(height: ScreenUtil().setHeight(10)),
                 Text(recipe.content,
-                maxLines: 9,
+                    maxLines: 9,
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(12.0),
                         color: Color.fromRGBO(25, 30, 81, 0.55)))

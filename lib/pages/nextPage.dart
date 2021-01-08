@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:moyin_challenge/pages/details.dart';
+import 'package:moyin_challenge/pages/create.dart';
 import 'package:moyin_challenge/pages/newpage.dart';
 import 'package:moyin_challenge/pages/search.dart';
 import 'package:moyin_challenge/pages/settings.dart';
@@ -20,7 +20,7 @@ class _NextPageState extends State<NextPage> {
   // var recpe = Recipe();
 
   bool stch = true;
-  final List<Widget> _children = [NewPage(), Details(), Search(), Settings()];
+  final List<Widget> _children = [NewPage(), Create(), Search(), Settings()];
 
   @override
   Widget build(BuildContext context) {
@@ -76,18 +76,18 @@ class _NextPageState extends State<NextPage> {
                     padding: const EdgeInsets.all(3.0),
                     child: new Text("Create"),
                   )),
-              new BottomNavigationBarItem(
-                  activeIcon: Container(
-                      child: SvgPicture.asset('assets/images/search1.svg')),
-                  icon: Container(
-                      child: SvgPicture.asset(
-                    'assets/images/search.svg',
-                    color: Colors.grey,
-                  )),
-                  title: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: new Text("Search"),
-                  )),
+              // new BottomNavigationBarItem(
+              //     activeIcon: Container(
+              //         child: SvgPicture.asset('assets/images/search1.svg')),
+              //     icon: Container(
+              //         child: SvgPicture.asset(
+              //       'assets/images/search.svg',
+              //       color: Colors.grey,
+              //     )),
+              //     title: Padding(
+              //       padding: const EdgeInsets.all(3.0),
+              //       child: new Text("Search"),
+              //     )),
               new BottomNavigationBarItem(
                   activeIcon: SvgPicture.asset('assets/images/settings1.svg'),
                   icon: Container(
@@ -113,18 +113,18 @@ class _NextPageState extends State<NextPage> {
         ));
   }
 
-  changeNumber() {
-    if (stch == true) {
-      setState(() {
-        stch = false;
-      });
-    }
-    if (stch == false) {
-      setState(() {
-        stch = true;
-      });
-    }
-  }
+  // changeNumber() {
+  //   if (stch == true) {
+  //     setState(() {
+  //       stch = false;
+  //     });
+  //   }
+  //   if (stch == false) {
+  //     setState(() {
+  //       stch = true;
+  //     });
+  //   }
+  // }
 
   void onTabTapped(int index) {
     setState(() {

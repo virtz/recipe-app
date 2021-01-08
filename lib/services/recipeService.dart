@@ -15,9 +15,6 @@ class RecipeService {
         .collection('userData')
         .document(uEmail)
         .collection('recipes')
-        // .add(recipe.toJson()).catchError((e){
-        //   print(e);
-        // });
         .document(recipe.title)
         .setData(recipe.toJson())
         .catchError((e) {
@@ -27,7 +24,7 @@ class RecipeService {
 
   getRecipes() async {
     final uEmail = await AuthService().getCurrentEmail();
-      QuerySnapshot snapshot = await db
+    QuerySnapshot snapshot = await db
         .collection('userData')
         .document(uEmail)
         .collection('recipes')
@@ -37,7 +34,22 @@ class RecipeService {
         print(e);
       }
     });
-  return snapshot;
+    return snapshot;
     // print(recipe);
+  }
+
+  updateRcipe(String id,Recipe recipe) async {
+    final uEmail = await AuthService().getCurrentEmail();
+    await db
+        .collection('userData')
+        .document(uEmail)
+        .collection('recipes')
+        .document(id)
+        .updateData(recipe.toJson())
+        .catchError((e) {
+          if(e is PlatformException){
+            print(e);
+          }
+        });
   }
 }
