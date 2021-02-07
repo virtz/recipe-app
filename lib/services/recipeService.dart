@@ -38,13 +38,13 @@ class RecipeService {
     // print(recipe);
   }
 
-  updateRcipe(String id,Recipe recipe) async {
+  updateRcipe(Recipe recipe) async {
     final uEmail = await AuthService().getCurrentEmail();
     await db
         .collection('userData')
         .document(uEmail)
         .collection('recipes')
-        .document(id)
+        .document(recipe.title)
         .updateData(recipe.toJson())
         .catchError((e) {
           if(e is PlatformException){

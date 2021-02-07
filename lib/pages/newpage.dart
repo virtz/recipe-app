@@ -155,7 +155,9 @@ class _NewPageState extends State<NewPage> {
                                     Recipe recipe = snapshot.data[index];
 
                                     return buildCard(recipe, dataCount, index,
-                                        snapshot.data[index]);
+                                        // snapshot.data[index].documentID
+                                        recipe.title
+                                        );
                                   });
                         case ConnectionState.waiting:
                           return Center(
@@ -163,7 +165,7 @@ class _NewPageState extends State<NewPage> {
                                 backgroundColor:
                                     Theme.of(context).primaryColor),
                           );
-                          break;
+                        break;
 
                         default:
                           return CircularProgressIndicator(
@@ -177,7 +179,9 @@ class _NewPageState extends State<NewPage> {
     );
   }
 
-  Widget buildCard(Recipe recipe, int dataCount, int index, int id) {
+  Widget buildCard(Recipe recipe, int dataCount, int index,
+  var id
+   ) {
     return GestureDetector(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(

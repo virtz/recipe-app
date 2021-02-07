@@ -1,51 +1,35 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:moyin_challenge/providers/recipeProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class Create extends StatefulWidget {
+class Update extends StatefulWidget {
   final String id;
   final String title;
   final String date;
   final String content;
 
-  const Create({Key key, this.id, this.title, this.date, this.content})
+  const Update({Key key, this.id, this.title, this.date, this.content})
       : super(key: key);
-
   @override
-  _DetailsState createState() => _DetailsState();
+  _UpdateState createState() => _UpdateState();
 }
 
-class _DetailsState extends State<Create> {
-  final formKey = GlobalKey<FormState>();
+class _UpdateState extends State<Update> {
+ final formKey = GlobalKey<FormState>();
   bool autoValidate = false;
 
   String title;
   String content;
-  var date;
+  String date;
 
-  var error;
-
-  getDate() {
-    date= DateTime.now();
-
-  }
-
-  @override
-  void initState() {
-    getDate();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    // var size = MediaQuery.of(context).size;
-    getDate();
-
+    
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
 
@@ -56,7 +40,7 @@ class _DetailsState extends State<Create> {
         allowFontScaling: true);
 
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+    
 //for snackbar
     void showSnackBar(String message) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -150,19 +134,18 @@ class _DetailsState extends State<Create> {
                   SizedBox(height: ScreenUtil().setHeight(60)),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      // IconButton(
+                      IconButton(
 
-                      //     // alignment: Alignment.topLeft,
-                      //     icon: Container(
-                      //         child: SvgPicture.asset(
-                      //             'assets/images/chevron-left.svg',
-                      //             height: 30)),
-                      //     onPressed: () {
-                      //       Navigator.of(context).pop();
-                      //     }),
-                      Text('Create',
+                          // alignment: Alignment.topLeft,
+                          icon: Container(
+                              child: SvgPicture.asset(
+                                  'assets/images/chevron-left.svg',
+                                  height: 30)),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
+                      Text('Update',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: ScreenUtil().setSp(16.0),
@@ -189,7 +172,7 @@ class _DetailsState extends State<Create> {
                           ])
                     ],
                   ),
-                  SizedBox(height: ScreenUtil().setHeight(30)),
+                  SizedBox(height: ScreenUtil().setHeight(20)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14.w),
                     child: Form(
@@ -243,39 +226,38 @@ class _DetailsState extends State<Create> {
                                       height: ScreenUtil().setHeight(35),
                                     ),
                                     // SizedBox(height: ScreenUtil().setHeight(15)),
-                                    // Container(
-                                    //   child: TextFormField(
-                                    //     initialValue: date ?? null,
-                                    //     onSaved: (val) => date = val,
-                                    //     validator: (value) {
-                                    //       if (value.isEmpty) {
-                                    //         return "Sorry fam, you can't leave this blank";
-                                    //       }
-                                    //       return null;
-                                    //     },
-                                    //     autocorrect: true,
-                                    //     style: TextStyle(
-                                    //       color: Colors.grey,
-                                    //       // fontStyle: FontStyle.italic,
-                                    //       fontSize: ScreenUtil().setSp(16.5),
-                                    //     ),
-                                    //     decoration: InputDecoration(
-                                    //       border: InputBorder.none,
-                                    //       //           enabledBorder: OutlineInputBorder(
-                                    //       //   borderRadius: BorderRadius.circular(6),
-                                    //       //   borderSide: BorderSide(
-                                    //       //       color: Color(0xFFD8D8DF), width: 1),
-                                    //       // ),
-                                    //       hintText: 'date',
-                                    //       hintStyle: TextStyle(
-                                    //         fontSize: ScreenUtil().setSp(12.0),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    //   width: ScreenUtil().setWidth(200),
-                                    // )
+                                    Container(
+                                      child: TextFormField(
+                                        initialValue: widget.date ?? null,
+                                        onSaved: (val) => date = val,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return "Sorry fam, you can't leave this blank";
+                                          }
+                                          return null;
+                                        },
+                                        autocorrect: true,
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: ScreenUtil().setSp(15.0),
+                                        ),
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          //           enabledBorder: OutlineInputBorder(
+                                          //   borderRadius: BorderRadius.circular(6),
+                                          //   borderSide: BorderSide(
+                                          //       color: Color(0xFFD8D8DF), width: 1),
+                                          // ),
+                                          hintText: 'date',
+                                          hintStyle: TextStyle(
+                                            fontSize: ScreenUtil().setSp(12.0),
+                                          ),
+                                        ),
+                                      ),
+                                      width: ScreenUtil().setWidth(200),
+                                    )
                                     //  height: ScreenUtil().setHeight(35),),
-                                    Text(date.toString())
                                   ],
                                 ),
                                 Row(
@@ -332,19 +314,5 @@ class _DetailsState extends State<Create> {
             );
           }),
         ));
-  }
-
-  saveEditedRecipe() async {
-    final recipeProvider = Provider.of<RecipeProvider>(context, listen: false);
-    final form = formKey.currentState;
-    if (form.validate()) {
-      print('validated');
-      recipeProvider.setLoading(true);
-      await recipeProvider
-          .updateRecipe(title, date, content, true)
-          .catchError((e) {
-        recipeProvider.getMessage();
-      });
-    }
   }
 }

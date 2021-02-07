@@ -42,11 +42,11 @@ class RecipeProvider with ChangeNotifier {
     }
   }
 
-  Future updateRecipe(String id,String title, date, content, bool done) async {
+  Future updateRecipe(String title, date, content, bool done) async {
     Recipe recipe =
         Recipe(title: title, date: date, content: content, done: done);
     try {
-      await RecipeService().updateRcipe(id,recipe).then((data) {
+      await RecipeService().updateRcipe(recipe).then((data) {
         setLoading(true);
         setMessage('successful');
         notifyListeners();
